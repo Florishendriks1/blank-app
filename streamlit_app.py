@@ -4,38 +4,41 @@ import random
 # Pagina setup
 st.set_page_config(page_title="Motivationater", layout="wide")
 
-# Custom CSS
+# Roboto + layout CSS
 st.markdown("""
     <style>
-    html, body, [class*="css"]  {
+    @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+
+    html, body, [class*="css"] {
         height: 100%;
         margin: 0;
         padding: 0;
+        font-family: 'Roboto', sans-serif;
     }
 
     .stApp {
         background: linear-gradient(180deg, #213B88, #121F44);
         color: white;
-        font-family: 'Segoe UI', sans-serif;
         display: flex;
-        align-items: center;
         justify-content: center;
+        align-items: center;
         flex-direction: column;
         height: 100vh;
         text-align: center;
+        padding-top: 40px;
     }
 
     .title {
         font-size: 48px;
         font-weight: bold;
-        margin-bottom: 60px;
-        margin-top: -60px;
+        margin-top: 20px;
+        margin-bottom: 20px;
     }
 
     .quote {
-        font-size: 32px;
+        font-size: 30px;
         font-weight: 500;
-        margin-bottom: 40px;
+        margin: 30px 0 40px 0;
         max-width: 700px;
     }
 
@@ -46,6 +49,12 @@ st.markdown("""
         color: white;
         border-radius: 8px;
         border: none;
+        transition: background-color 0.3s ease;
+    }
+
+    .stButton>button:hover {
+        background-color: #3A70F5;
+        color: white;
     }
 
     .popup {
@@ -61,10 +70,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Titeltje bovenaan
-st.markdown("<div class='title'>Motivationater</div>", unsafe_allow_html=True)
-
-# Motivatie quotes
+# Quotes
 quotes = [
     "Succes begint waar comfort stopt.",
     "Kleine stappen vooruit zijn beter dan geen stappen.",
@@ -76,21 +82,24 @@ quotes = [
     "Geduld + doorzettingsvermogen = resultaat."
 ]
 
-# Session state voor quote en klikcount
+# Session state
 if "quote_index" not in st.session_state:
     st.session_state.quote_index = random.randint(0, len(quotes)-1)
 if "clicks" not in st.session_state:
     st.session_state.clicks = 0
 
-# Toon quote
+# Titel
+st.markdown("<div class='title'>Motivationater</div>", unsafe_allow_html=True)
+
+# Quote
 st.markdown(f"<div class='quote'>{quotes[st.session_state.quote_index]}</div>", unsafe_allow_html=True)
 
-# Quote button
+# Knop
 if st.button("💬 Toon een andere quote"):
     st.session_state.quote_index = random.randint(0, len(quotes)-1)
     st.session_state.clicks += 1
 
-# Popup melding na 2 klikken
+# Popup na 2 klikken
 if st.session_state.clicks == 2:
     st.markdown("""
         <div class='popup'>
