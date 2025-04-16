@@ -9,6 +9,7 @@ st.markdown("""
     html, body, [class*="css"] {
         margin: 0;
         padding: 0;
+        height: 100%;
         font-family: 'Roboto', sans-serif;
     }
     .stApp {
@@ -26,24 +27,23 @@ st.markdown("""
         align-items: center;
         justify-content: center;
         gap: 30px;
-        width: 100%;
-        max-width: 800px;
     }
     .title {
         font-size: 48px;
         font-weight: bold;
         color: white;
-        margin-bottom: 10px;
     }
     .quote-box {
+        display: inline-block;
         background-color: white;
         color: #213B88;
-        padding: 30px 40px;
+        padding: 20px 30px;
         border-radius: 20px;
         font-size: 28px;
         font-weight: 500;
-        width: 100%;
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        white-space: pre-wrap;
+        max-width: 90vw;
     }
     .stButton>button {
         font-size: 18px;
@@ -61,13 +61,12 @@ st.markdown("""
     .popup {
         background-color: white;
         color: #213B88;
-        padding: 25px;
-        border-radius: 15px;
-        font-size: 18px;
-        width: 100%;
+        padding: 30px;
+        border-radius: 20px;
+        font-size: 22px;
+        width: auto;
         max-width: 400px;
         box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
-        margin-top: 20px;
     }
     a {
         color: #121F44;
@@ -93,20 +92,19 @@ if "quote_index" not in st.session_state:
 if "clicks" not in st.session_state:
     st.session_state.clicks = 0
 
-st.markdown("<div class='main-container'>", unsafe_allow_html=True)
+if st.session_state.clicks < 4:
+    st.markdown("<div class='main-container'>", unsafe_allow_html=True)
+    st.markdown("<div class='title'>Motivationater</div>", unsafe_allow_html=True)
+    st.markdown(f"<div class='quote-box'>{quotes[st.session_state.quote_index]}</div>", unsafe_allow_html=True)
+    if st.button("💬 Toon een andere quote"):
+        new_index = st.session_state.quote_index
+        while new_index == st.session_state.quote_index:
+            new_index = random.randint(0, len(quotes)-1)
+        st.session_state.quote_index = new_index
+        st.session_state.clicks += 1
+    st.markdown("</div>", unsafe_allow_html=True)
 
-st.markdown("<div class='title'>Motivationater</div>", unsafe_allow_html=True)
-
-st.markdown(f"<div class='quote-box'>{quotes[st.session_state.quote_index]}</div>", unsafe_allow_html=True)
-
-if st.button("💬 Toon een andere quote"):
-    new_index = st.session_state.quote_index
-    while new_index == st.session_state.quote_index:
-        new_index = random.randint(0, len(quotes)-1)
-    st.session_state.quote_index = new_index
-    st.session_state.clicks += 1
-
-if st.session_state.clicks >= 2:
+if st.session_state.clicks >= 4:
     st.markdown("""
         <div class='popup'>
             👋 Wil je écht verandering?  
@@ -114,5 +112,3 @@ if st.session_state.clicks >= 2:
             <a href="#">Neem hier contact op</a>
         </div>
     """, unsafe_allow_html=True)
-
-st.markdown("</div>", unsafe_allow_html=True)
