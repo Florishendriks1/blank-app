@@ -1,10 +1,10 @@
 import streamlit as st
 import random
 
-# Pagina-instellingen
-st.set_page_config(page_title="Motivatie", layout="wide")
+# Pagina setup
+st.set_page_config(page_title="Motivationater", layout="wide")
 
-# CSS voor volledige gradient background en centrering
+# Custom CSS
 st.markdown("""
     <style>
     html, body, [class*="css"]  {
@@ -25,11 +25,18 @@ st.markdown("""
         text-align: center;
     }
 
-    .quote {
-        font-size: 36px;
+    .title {
+        font-size: 48px;
         font-weight: bold;
+        margin-bottom: 60px;
+        margin-top: -60px;
+    }
+
+    .quote {
+        font-size: 32px;
+        font-weight: 500;
         margin-bottom: 40px;
-        max-width: 800px;
+        max-width: 700px;
     }
 
     .stButton>button {
@@ -40,10 +47,24 @@ st.markdown("""
         border-radius: 8px;
         border: none;
     }
+
+    .popup {
+        background-color: white;
+        color: black;
+        padding: 25px;
+        border-radius: 15px;
+        font-size: 18px;
+        margin-top: 30px;
+        width: 300px;
+        box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
+    }
     </style>
 """, unsafe_allow_html=True)
 
-# Quotes
+# Titeltje bovenaan
+st.markdown("<div class='title'>Motivationater</div>", unsafe_allow_html=True)
+
+# Motivatie quotes
 quotes = [
     "Succes begint waar comfort stopt.",
     "Kleine stappen vooruit zijn beter dan geen stappen.",
@@ -55,13 +76,26 @@ quotes = [
     "Geduld + doorzettingsvermogen = resultaat."
 ]
 
-# Init session state
+# Session state voor quote en klikcount
 if "quote_index" not in st.session_state:
     st.session_state.quote_index = random.randint(0, len(quotes)-1)
+if "clicks" not in st.session_state:
+    st.session_state.clicks = 0
 
-# Quote tonen
+# Toon quote
 st.markdown(f"<div class='quote'>{quotes[st.session_state.quote_index]}</div>", unsafe_allow_html=True)
 
-# Knop
+# Quote button
 if st.button("💬 Toon een andere quote"):
     st.session_state.quote_index = random.randint(0, len(quotes)-1)
+    st.session_state.clicks += 1
+
+# Popup melding na 2 klikken
+if st.session_state.clicks == 2:
+    st.markdown("""
+        <div class='popup'>
+            👋 Wil je écht verandering?  
+            <br><br>
+            <b><a href="#" style="color:#121F44; text-decoration: none;">Neem hier contact op</a></b>
+        </div>
+    """, unsafe_allow_html=True)
