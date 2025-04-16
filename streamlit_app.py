@@ -1,7 +1,7 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
-# Custom CSS for styling
+# Custom CSS
 notebook_css = """
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Caveat&display=swap');
@@ -17,7 +17,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 85vh;
 }
 
 .notebook {
@@ -40,12 +40,13 @@ body {
     border-left: 2px solid #E8D8B6;
     padding: 20px;
     box-sizing: border-box;
-    font-size: 20px;
+    font-size: 22px;
     line-height: 28px;
     color: #333;
     font-family: 'Caveat', cursive;
     white-space: pre-wrap;
     overflow-y: auto;
+    z-index: 2;
 }
 
 .page:before {
@@ -92,13 +93,13 @@ button:hover {
 </style>
 """
 
-# Session state initialization
+# Session state
 if 'pages' not in st.session_state:
     st.session_state.pages = [""]
 if 'current_page' not in st.session_state:
     st.session_state.current_page = 0
 
-# Function to handle navigation
+# Navigation functions
 def prev_page():
     if st.session_state.current_page > 0:
         st.session_state.current_page -= 1
@@ -110,35 +111,32 @@ def next_page():
         st.session_state.pages.append("")
         st.session_state.current_page += 1
 
-# Layout
+# Input form
 st.markdown(notebook_css, unsafe_allow_html=True)
+with st.form("notebook_input_form"):
+    user_input = st.text_area(
+        "Typ hier je notitie voor deze pagina:",
+        value=st.session_state.pages[st.session_state.current_page],
+        height=150,
+        label_visibility="collapsed"
+    )
+    submitted = st.form_submit_button("📜 Schrijf op pagina")
+    if submitted:
+        st.session_state.pages[st.session_state.current_page] = user_input
 
-st.markdown('<div class="notebook-container">', unsafe_allow_html=True)
-st.markdown('<div class="notebook">', unsafe_allow_html=True)
-
-# Text area input
-content = st.text_area(
-    label="",
-    value=st.session_state.pages[st.session_state.current_page],
-    height=420,
-    label_visibility="collapsed"
-)
-
-# Update current page content
-st.session_state.pages[st.session_state.current_page] = content
-
-# Overlay lines
+# Notebook display
+st.markdown('<div class="notebook-container"><div class="notebook">', unsafe_allow_html=True)
 st.markdown('<div class="lines"></div>', unsafe_allow_html=True)
-st.markdown('</div>', unsafe_allow_html=True)  # Close .notebook
-st.markdown('</div>', unsafe_allow_html=True)  # Close .notebook-container
+st.markdown(f'<div class="page">{st.session_state.pages[st.session_state.current_page]}</div>', unsafe_allow_html=True)
+st.markdown('</div></div>', unsafe_allow_html=True)
 
-# Navigation buttons
-col1, col2, col3 = st.columns([1, 1, 1])
+# Navigation
+col1, col2, col3 = st.columns([1, 2, 1])
 with col1:
     if st.button("← Vorige"):
         prev_page()
 with col2:
-    st.markdown(f"Pagina {st.session_state.current_page + 1} van {len(st.session_state.pages)}", unsafe_allow_html=True)
+    st.markdown(f"<center><b>Pagina {st.session_state.current_page + 1} van {len(st.session_state.pages)}</b></center>", unsafe_allow_html=True)
 with col3:
     if st.button("Volgende →"):
         next_page()
