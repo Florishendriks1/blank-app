@@ -25,12 +25,15 @@ st.markdown("""
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        gap: 30px;
+        width: 100%;
+        max-width: 800px;
     }
     .title {
         font-size: 48px;
         font-weight: bold;
-        margin-bottom: 40px;
         color: white;
+        margin-bottom: 10px;
     }
     .quote-box {
         background-color: white;
@@ -39,8 +42,7 @@ st.markdown("""
         border-radius: 20px;
         font-size: 28px;
         font-weight: 500;
-        max-width: 700px;
-        margin-bottom: 40px;
+        width: 100%;
         box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     }
     .stButton>button {
@@ -62,9 +64,15 @@ st.markdown("""
         padding: 25px;
         border-radius: 15px;
         font-size: 18px;
-        margin-top: 30px;
-        width: 300px;
+        width: 100%;
+        max-width: 400px;
         box-shadow: 0px 0px 20px rgba(0,0,0,0.3);
+        margin-top: 20px;
+    }
+    a {
+        color: #121F44;
+        text-decoration: none;
+        font-weight: bold;
     }
     </style>
 """, unsafe_allow_html=True)
@@ -86,7 +94,9 @@ if "clicks" not in st.session_state:
     st.session_state.clicks = 0
 
 st.markdown("<div class='main-container'>", unsafe_allow_html=True)
+
 st.markdown("<div class='title'>Motivationater</div>", unsafe_allow_html=True)
+
 st.markdown(f"<div class='quote-box'>{quotes[st.session_state.quote_index]}</div>", unsafe_allow_html=True)
 
 if st.button("💬 Toon een andere quote"):
@@ -101,7 +111,7 @@ if st.session_state.clicks >= 2:
         <div class='popup'>
             👋 Wil je écht verandering?  
             <br><br>
-            <b><a href="#" style="color:#121F44; text-decoration: none;">Neem hier contact op</a></b>
+            <a href="#">Neem hier contact op</a>
         </div>
     """, unsafe_allow_html=True)
 
